@@ -7,30 +7,33 @@ const currentTodo = ref("");
 const addCart = () => {
   if (currentTodo.value) {
     todos.value.push(currentTodo.value);
+    currentTodo.value = "";
   }
 };
 const { parent } = useDragAndDrop(todos);
 </script>
 <template>
   <div
-    class="flex gap-2 flex-col p-2 bg-gray-100 border-2 border-solid w-64 border-slate-600 rounded-lg"
+    class="flex gap-2 flex-col p-2 bg-emerald-200 border-2 border-solid w-64 border-emerald-600 rounded-lg"
   >
-    <h2>TODOs</h2>
+    <h2 class="font-bold">TODOs</h2>
     <div ref="parent" class="flex flex-col gap-1">
       <div v-for="(todo, index) in todos" :index="index">
-        <div class="rounded-md shadow-md p-3 bg-gray-50 text-left">
+        <div class="rounded-lg shadow p-3 bg-lime-50/80 text-left">
           {{ todo }}
         </div>
       </div>
     </div>
 
     <textarea
-      class="rounded-md shadow-md p-3"
+      class="rounded-lg bg-lime-50/80 shadow p-3"
       type="text"
       v-model="currentTodo"
+      placeholder="Add a new cart..."
+      autofocus
     />
     <button
-      class="hover:bg-slate-300 flex gap-5 duration-200 transition-colors border-0"
+      class="hover:bg-emerald-900 bg-emerald-800 rounded text-white flex gap-5 duration-200 transition-colors border-0"
       v-on:click="addCart"
     >
       <plus-icon /> Add a cart
