@@ -2,25 +2,27 @@
 import { ref } from "vue";
 import PlusIcon from "./icons/PlusIcon.vue";
 import { useDragAndDrop } from "vue-fluid-dnd";
-const todos = ref([] as string[]);
-const currentTodo = ref("");
+import { Container } from ".";
+const cards = ref([] as string[]);
+const currentCard = ref("");
+const { container } = defineProps<{ container: Container }>();
 const addCart = () => {
-  if (currentTodo.value) {
-    todos.value.push(currentTodo.value);
-    currentTodo.value = "";
+  if (currentCard.value) {
+    cards.value.push(currentCard.value);
+    currentCard.value = "";
   }
 };
-const { parent } = useDragAndDrop(todos);
+const { parent } = useDragAndDrop(cards);
 </script>
 <template>
   <div
     class="flex gap-2 flex-col p-2 bg-emerald-200 border-2 border-solid w-64 border-emerald-600 rounded-lg"
   >
-    <h2 class="font-bold">TODOs</h2>
+    <h2 class="font-bold">{{ container.name }}</h2>
     <div ref="parent" class="flex flex-col gap-1">
-      <div v-for="(todo, index) in todos" :index="index">
+      <div v-for="(card, index) in cards" :index="index">
         <div class="rounded-lg shadow p-3 bg-lime-50/80 text-left">
-          {{ todo }}
+          {{ card }}
         </div>
       </div>
     </div>
@@ -28,7 +30,7 @@ const { parent } = useDragAndDrop(todos);
     <textarea
       class="rounded-lg bg-lime-50/80 shadow p-3"
       type="text"
-      v-model="currentTodo"
+      v-model="currentCard"
       placeholder="Add a new cart..."
       autofocus
     />
