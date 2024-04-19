@@ -22,11 +22,22 @@ const { parent } = useDragAndDrop(cards);
   >
     <h2 class="font-bold">{{ container.name }}</h2>
     <div ref="parent" class="flex flex-col gap-1">
-      <div v-for="(card, index) in container.cards" :index="index">
-        <div class="rounded-lg shadow p-3 bg-lime-50/80 text-left">
-          {{ card }}
+      <transition-group
+        enter-from-class="opacity-0 translate-y-2"
+        leave-to-class="opacity-0 translate-y-2"
+        leave-active-class="transition-[transform,_opacity] duration-500 ease"
+        enter-active-class="transition-[transform,_opacity] duration-500 ease"
+      >
+        <div
+          v-for="(card, index) in container.cards"
+          :index="index"
+          :key="card"
+        >
+          <div class="rounded-lg shadow p-3 bg-lime-50/80 text-left">
+            {{ card }}
+          </div>
         </div>
-      </div>
+      </transition-group>
     </div>
 
     <textarea
