@@ -6,11 +6,12 @@ import { Container } from "./components";
 
 const containers = ref([] as Container[]);
 const addingContainer = ref(false);
-const emptyContainer: Container = { name: "", cards: [] };
-const containerToAdd = ref<Container>(emptyContainer);
+const getEmptyContainer = (): Container => ({ name: "", cards: [] });
+
+const containerToAdd = ref<Container>(getEmptyContainer());
 const startAddingContainer = () => {
   if (!addingContainer.value) {
-    containerToAdd.value = { ...emptyContainer };
+    containerToAdd.value = getEmptyContainer();
   } else {
     containers.value.push(containerToAdd.value);
   }

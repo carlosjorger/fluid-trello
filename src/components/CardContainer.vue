@@ -3,12 +3,14 @@ import { ref } from "vue";
 import PlusIcon from "./icons/PlusIcon.vue";
 import { useDragAndDrop } from "vue-fluid-dnd";
 import { Container } from ".";
-const cards = ref([] as string[]);
 const currentCard = ref("");
 const { container } = defineProps<{ container: Container }>();
+
+const cards = ref(container.cards);
+
 const addCart = () => {
   if (currentCard.value) {
-    cards.value.push(currentCard.value);
+    container.cards.push(currentCard.value);
     currentCard.value = "";
   }
 };
@@ -20,7 +22,7 @@ const { parent } = useDragAndDrop(cards);
   >
     <h2 class="font-bold">{{ container.name }}</h2>
     <div ref="parent" class="flex flex-col gap-1">
-      <div v-for="(card, index) in cards" :index="index">
+      <div v-for="(card, index) in container.cards" :index="index">
         <div class="rounded-lg shadow p-3 bg-lime-50/80 text-left">
           {{ card }}
         </div>
