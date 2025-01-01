@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import CardContainer from "./components/CardContainer.vue";
 import { Container } from "./components";
-// import { useDragAndDrop } from "vue-fluid-dnd";
+import { useDragAndDrop } from "vue-fluid-dnd";
 
 const containers = ref([] as Container[]);
 const addingContainer = ref(false);
@@ -17,31 +17,30 @@ const startAddingContainer = () => {
   }
   addingContainer.value = !addingContainer.value;
 };
-// const { parent } = useDragAndDrop(containers, {
-//   direction: "horizontal",
-// });
+const { parent } = useDragAndDrop(containers, {
+  direction: "horizontal"
+});
 </script>
 
 <template>
   <div class="flex items-start gap-4">
-    <transition-group
-      tag="div"
-      name="containers"
-      ref="parent"
-      class="flex items-start gap-4"
-      enter-from-class="opacity-0 -translate-x-2"
-      leave-to-class="opacity-0 -translate-x-2"
-      leave-active-class="transition-[transform,_opacity] duration-500 ease"
-      enter-active-class="transition-[transform,_opacity] duration-500 ease"
-    >
-      <card-container
-        v-for="(container, index) in containers"
-        :container
-        :index="index"
-        :ref="container.name"
-        :key="container.name"
-      />
-    </transition-group>
+    <div ref="parent"  class="flex items-start gap-4">
+      <transition-group
+        name="containers"
+        enter-from-class="opacity-0 -translate-x-2"
+        leave-to-class="opacity-0 -translate-x-2"
+        leave-active-class="transition-[transform,_opacity] duration-500 ease"
+        enter-active-class="transition-[transform,_opacity] duration-500 ease"
+      >
+        <card-container
+          v-for="(container, index) in containers"
+          :container
+          :index="index"
+          :ref="container.name"
+          :key="container.name"
+        />
+      </transition-group>
+    </div>
     <div
       class="flex flex-col bg-emerald-200 border-emerald-600 rounded-lg transition-[padding,_gap] duration-200 ease-in"
       :class="{
