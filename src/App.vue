@@ -12,7 +12,11 @@ const containerToAdd = ref<Container>(getEmptyContainer());
 const startAddingContainer = () => {
   if (!addingContainer.value) {
     containerToAdd.value = getEmptyContainer();
-  } else {
+  }
+  else if(!containerToAdd.value.name){
+    return
+  } 
+  else {
     containers.value.push(containerToAdd.value);
   }
   addingContainer.value = !addingContainer.value;
@@ -42,28 +46,22 @@ const { parent } = useDragAndDrop(containers, {
       </transition-group>
     </div>
     <div
-      class="flex flex-col bg-emerald-200 border-emerald-600 rounded-lg transition-[padding,_gap] duration-200 ease-in"
+      class="flex flex-col bg-emerald-900 border-emerald-600 rounded-lg transition-[padding,_gap] duration-200 ease-in"
       :class="{
-        'p-4 gap-3': addingContainer,
+        'p-4 gap-2': addingContainer,
       }"
     >
-      <transition
-        enter-active-class="duration-300 ease-out"
-        enter-from-class="transform opacity-0"
-        enter-to-class="opacity-100"
-        leave-active-class="duration-200 ease-in"
-        leave-from-class="opacity-100"
-        leave-to-class="transform opacity-0"
-      >
-        <input
-          v-if="addingContainer"
-          type="text"
-          class="bg-lime-50/80"
-          v-model="containerToAdd.name"
-        />
-      </transition>
-
-      <button @click="startAddingContainer">
+      <input
+        v-if="addingContainer"
+        type="text"
+        class="bg-lime-50/80 shadow text-black rounded-sm px-3 py-1"
+        v-model="containerToAdd.name"
+        placeholder="Name of the container..."
+      />
+      <button 
+        class="bg-emerald-900 hover:bg-white/30 border-0" 
+        @click="startAddingContainer"
+        >
         <span v-if="!addingContainer"> Add another container</span>
         <span v-else>Add container</span>
       </button>

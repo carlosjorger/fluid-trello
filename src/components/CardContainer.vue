@@ -23,9 +23,9 @@ const { parent } = useDragAndDrop(cards);
     <h2 class="font-bold">{{ container.name }}</h2>
     <div ref="parent" class="flex flex-col gap-1">
       <div
-          v-for="(card, index) in cards"
-          :index="index"
-          :key="card"
+        v-for="(card, index) in cards"
+        :index="index"
+        :key="card"
         >
           <div class="rounded-lg shadow p-3 bg-slate-300/40 text-left">
             {{ card }}
