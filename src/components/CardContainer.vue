@@ -16,7 +16,9 @@ const addCart = () => {
     currentCard.value = "";
   }
 };
-const { parent } = useDragAndDrop(cards);
+const { parent } = useDragAndDrop(cards,{
+  droppableGroup:'cards'
+});
 </script>
 <template>
   <div
