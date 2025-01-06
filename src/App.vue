@@ -73,3 +73,4 @@ const { parent } = useDragAndDrop(containers, {
     </div>
   </div>
 </template>
+<!-- TODO: save on local storage -->

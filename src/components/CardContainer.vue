@@ -36,6 +36,7 @@ function endEditingContainerName(){
   <div
     class="flex gap-2 flex-col p-2 bg-emerald-900 w-64 rounded-2xl"
   >
+  <!-- TODO: add styles to container name edition (see trello) -->
   <div class="px-2 mt-1 relative min-h-6" v-clickOutside="endEditingContainerName">
     <textarea
     ref="containerMame"
@@ -51,6 +52,7 @@ function endEditingContainerName(){
     </h2>
   </div>
   <div ref="parent" class="flex flex-col gap-1 p-1 rounded-md transition-colors ease-in duration-200">
+    <!-- TODO: add transition to card-->
     <card
       v-for="(_, index) in cards"
       :index="index"
