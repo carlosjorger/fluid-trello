@@ -6,7 +6,12 @@ import { useDragAndDrop } from "vue-fluid-dnd";
 
 const containers = ref([] as Container[]);
 const addingContainer = ref(false);
-const getEmptyContainer = (): Container => ({ name: "", cards: [] });
+
+const getEmptyContainer = (): Container => {
+  const ids = containers.value.map(({id})=>id);
+  const maxId = ids.length == 0? 0 :Math.max(...ids);
+  return ({ name: "", cards: [], id: maxId + 1 })
+};
 
 const containerToAdd = ref<Container>(getEmptyContainer());
 const startAddingContainer = () => {
@@ -41,7 +46,7 @@ const { parent } = useDragAndDrop(containers, {
           :container
           :index="index"
           :ref="container.name"
-          :key="container.name"
+          :key="container.id"
         />
       </transition-group>
     </div>
