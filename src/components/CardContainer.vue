@@ -36,16 +36,15 @@ function endEditingContainerName(){
   <div
     class="flex gap-2 flex-col p-2 bg-emerald-900 w-64 rounded-2xl"
   >
-  <!-- TODO: add styles to container name edition (see trello) -->
   <div class="px-2 mt-1 relative min-h-6" v-clickOutside="endEditingContainerName">
     <textarea
     ref="containerMame"
     :class="{
-      '-z-10 opacity-0':!editContainerName
+      'not-editing':!editContainerName
     }"
-     class="font-bold resize-none outline-none border-none bg-transparent absolute right-0 left-0 pl-2" v-model="container.name"/>
+     class="font-bold resize-none outline-none shadow-[inset_0_0_0_2px_rgba(0,0,0,0.3)] rounded-md shadow-[rgb(5_150_105)] border-none opacity-100 bg-transparent absolute right-0 left-0 pl-2 max-h-12 transition-[background-color,_border-color,_box-shadow] duration-200" v-model="container.name"/>
     <h2 
-      class="font-bold text-left " 
+      class="font-bold text-left w-full" 
       :hidden="editContainerName"
       @click="startEditingContainerName">
      {{ container.name }}
@@ -79,5 +78,15 @@ function endEditingContainerName(){
 <style>
 .droppable-cards-container{
   background-color: rgb(5 150 105);;
+}
+</style>
+<style scoped>
+textarea{
+  field-sizing: content;
+}
+.not-editing{
+  opacity: 0 !important;
+  z-index: -1;
+  box-shadow: none !important;
 }
 </style>

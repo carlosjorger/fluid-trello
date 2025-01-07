@@ -18,7 +18,7 @@
     };
 </script>
 <template>
-    <div class="rounded-lg shadow p-3 bg-slate-300/40 text-left relative min-h-12" v-on:mouseenter="cardEnter"  v-on:mouseleave="cardLeave" v-clickOutside="closeDropdown">
+    <div class="rounded-lg shadow p-3 bg-slate-300/40 text-left relative" v-on:mouseenter="cardEnter"  v-on:mouseleave="cardLeave" v-clickOutside="closeDropdown">
         <input  v-if="editCard" v-focus v-model="model" class="resize-none outline-none border-none bg-transparent"/>
         <span v-else>{{ model }}</span>
         <Transition>
