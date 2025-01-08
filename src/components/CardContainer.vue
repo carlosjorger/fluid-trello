@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, useTemplateRef } from "vue";
+import { computed, ref, useTemplateRef, watch } from "vue";
 import PlusIcon from "./icons/PlusIcon.vue";
 import { useDragAndDrop } from "vue-fluid-dnd";
 import { Container } from ".";
@@ -31,26 +31,27 @@ function startEditingContainerName(){
 function endEditingContainerName(){
   editContainerName.value = false
 }
+// TODO: create a reactove variable dragging to know if parent has droppable-cards-container class
 </script>
 <template>
   <div
     class="flex gap-2 flex-col p-2 bg-emerald-900 w-64 rounded-2xl"
   >
-  <div class="px-2 mt-1 relative min-h-6" v-clickOutside="endEditingContainerName">
+  <div class="px-2 mt-1 relative min-h-8" v-clickOutside="endEditingContainerName">
     <textarea
-    ref="containerMame"
-    :class="{
-      'not-editing':!editContainerName
-    }"
-     class="font-bold resize-none outline-none shadow-[inset_0_0_0_2px_rgba(0,0,0,0.3)] rounded-md shadow-white border-none opacity-100 bg-transparent absolute right-0 left-0 pl-2 max-h-12 transition-[background-color,_border-color,_box-shadow] duration-200" v-model="container.name"/>
+      ref="containerMame"
+      :class="{
+        'not-editing':!editContainerName
+      }"
+      class="font-bold resize-none py-1 outline-none shadow-[inset_0_0_0_2px_rgba(0,0,0,0.3)] rounded-md shadow-white border-none opacity-100 bg-transparent absolute right-0 left-0 pl-2 max-h-12 transition-[background-color,_border-color,_box-shadow] duration-200" v-model="container.name"/>
     <h2 
-      class="font-bold text-left w-full" 
+      class="font-bold text-left w-full py-1" 
       :hidden="editContainerName"
       @click="startEditingContainerName">
      {{ container.name }}
     </h2>
   </div>
-  <div ref="parent" class="flex flex-col gap-1 p-1 rounded-md transition-colors ease-in duration-200">
+  <div ref="parent" class="flex flex-col gap-2 p-1 rounded-md transition-colors ease-in duration-200">
     <card
       v-for="(_, index) in cards"
       :index="index"
