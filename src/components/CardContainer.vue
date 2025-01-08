@@ -42,7 +42,7 @@ function endEditingContainerName(){
     :class="{
       'not-editing':!editContainerName
     }"
-     class="font-bold resize-none outline-none shadow-[inset_0_0_0_2px_rgba(0,0,0,0.3)] rounded-md shadow-[rgb(5_150_105)] border-none opacity-100 bg-transparent absolute right-0 left-0 pl-2 max-h-12 transition-[background-color,_border-color,_box-shadow] duration-200" v-model="container.name"/>
+     class="font-bold resize-none outline-none shadow-[inset_0_0_0_2px_rgba(0,0,0,0.3)] rounded-md shadow-white border-none opacity-100 bg-transparent absolute right-0 left-0 pl-2 max-h-12 transition-[background-color,_border-color,_box-shadow] duration-200" v-model="container.name"/>
     <h2 
       class="font-bold text-left w-full" 
       :hidden="editContainerName"
@@ -51,7 +51,6 @@ function endEditingContainerName(){
     </h2>
   </div>
   <div ref="parent" class="flex flex-col gap-1 p-1 rounded-md transition-colors ease-in duration-200">
-    <!-- TODO: add transition to card-->
     <card
       v-for="(_, index) in cards"
       :index="index"

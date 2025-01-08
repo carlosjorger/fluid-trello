@@ -18,8 +18,16 @@
     };
 </script>
 <template>
-    <div class="rounded-lg shadow p-3 bg-slate-300/40 text-left relative" v-on:mouseenter="cardEnter"  v-on:mouseleave="cardLeave" v-clickOutside="closeDropdown">
-        <input  v-if="editCard" v-focus v-model="model" class="resize-none outline-none border-none bg-transparent"/>
+    <div 
+        class="rounded-lg shadow p-3 bg-slate-300/40 text-left relative border-2 transition-colors" 
+        :class="{
+            'border-white' : editCard,
+            'border-white/0 hover:border-white' : !editCard
+        }" 
+        v-on:mouseenter="cardEnter"  
+        v-on:mouseleave="cardLeave" 
+        v-clickOutside="closeDropdown">
+        <input v-if="editCard" v-focus v-model="model" class="resize-none outline-none border-none bg-transparent"/>
         <span v-else>{{ model }}</span>
         <Transition>
             <button @click="editCard=true" v-if="showEdit&&!editCard" class="absolute right-1 bg-white/0 top-1 p-2 rounded-full hover:bg-white/10 border-none transition-colors"><edit-icon/></button>
