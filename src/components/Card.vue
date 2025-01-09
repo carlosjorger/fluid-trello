@@ -3,6 +3,7 @@
     import EditIcon from './icons/EditIcon.vue';
 
     const model = defineModel({ type: String })
+    const { draggingOverContainer } = defineProps<{ draggingOverContainer: boolean }>();
 
     const showEdit = ref(false)
     const editCard = ref(false)
@@ -18,12 +19,11 @@
     };
 </script>
 <template>
-    <!-- TODO: avoid to hover is an element is dragged -->
     <div 
         class="rounded-lg shadow p-2 bg-slate-300/40 text-left relative border-2 transition-colors" 
         :class="{
             'border-white' : editCard,
-            'border-white/0 hover:border-white' : !editCard
+            'border-white/0 hover:border-white' : !editCard,
         }" 
         v-on:mouseenter="cardEnter"  
         v-on:mouseleave="cardLeave" 
@@ -31,7 +31,7 @@
         <input v-if="editCard" v-focus v-model="model" class="resize-none outline-none border-none bg-transparent"/>
         <span v-else>{{ model }}</span>
         <Transition>
-            <button @click="editCard=true" v-if="showEdit&&!editCard" class="absolute right-1 bg-white/0 top-1 p-1 rounded-full hover:bg-white/10 border-none transition-colors"><edit-icon/></button>
+            <button @click="editCard=true" v-if="showEdit&&!editCard&&!draggingOverContainer" class="absolute right-1 bg-white/0 top-1 p-1 rounded-full hover:bg-white/10 border-none transition-colors"><edit-icon/></button>
         </Transition>
     </div>
 </template>

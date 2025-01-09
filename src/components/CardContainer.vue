@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, useTemplateRef, watch } from "vue";
+import { onMounted, ref, useTemplateRef } from "vue";
 import PlusIcon from "./icons/PlusIcon.vue";
 import { useDragAndDrop } from "vue-fluid-dnd";
 import { Container } from ".";
@@ -22,6 +22,21 @@ const { parent } = useDragAndDrop(cards,{
   droppableClass:'droppable-cards-container'
 });
 const containerMame = useTemplateRef('containerMame')
+const observer = ref<MutationObserver>()
+const draggingOverContainer=ref(false)
+function classMutationCallback(mutationsList : MutationRecord[]){
+  for(let mutation of mutationsList) {
+    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+      const target= mutation.target as HTMLElement
+      if (target && target.classList.contains('droppable-cards-container')) {
+        draggingOverContainer.value = true
+      }
+      else{
+        draggingOverContainer.value = false
+      }
+    }
+  }
+} 
 function startEditingContainerName(){
    editContainerName.value = true
    if (containerMame.value) {
@@ -31,7 +46,15 @@ function startEditingContainerName(){
 function endEditingContainerName(){
   editContainerName.value = false
 }
-// TODO: create a reactove variable dragging to know if parent has droppable-cards-container class
+onMounted(()=>{
+  observer.value = new MutationObserver(classMutationCallback)
+  if (parent.value) {
+    observer.value.observe(parent.value, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+  }
+})
 </script>
 <template>
   <div
@@ -56,6 +79,7 @@ function endEditingContainerName(){
       v-for="(_, index) in cards"
       :index="index"
       v-model="cards[index]"
+      :draggingOverContainer
       >
     </card>
   </div>
