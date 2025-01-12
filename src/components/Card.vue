@@ -29,7 +29,7 @@
         v-on:mouseleave="cardLeave" 
         v-clickOutside="closeDropdown">
         <input v-if="editCard" v-focus v-model="model" class="resize-none outline-none border-none bg-transparent"/>
-        <span v-else>{{ model }}</span>
+        <div v-else>{{ model }}</div>
         <Transition>
             <button @click="editCard=true" v-if="showEdit&&!editCard&&!draggingOverContainer" class="absolute right-1 bg-white/0 top-1 p-1 rounded-full hover:bg-white/10 border-none transition-colors"><edit-icon/></button>
         </Transition>
