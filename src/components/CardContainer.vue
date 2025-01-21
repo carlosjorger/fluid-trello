@@ -74,7 +74,7 @@ onMounted(()=>{
      {{ container.name }}
     </h2>
   </div>
-  <div ref="parent" class="flex flex-col gap-2 p-1 rounded-md transition-colors ease-in duration-200">
+  <div ref="parent" class="flex flex-col gap-2 p-1 rounded-md transition-[color,_background-color,_border-color,_min-height] min-h-6 ease-in duration-200">
     <card
       v-for="(_, index) in cards"
       :index="index"

@@ -9,8 +9,8 @@ dependencies:
     specifier: 3.5.13
     version: 3.5.13(typescript@5.2.2)
   vue-fluid-dnd:
-    specifier: ^0.11.1
-    version: 0.11.1(vue@3.5.13)
+    specifier: ^0.11.3
+    version: 0.11.3(vue@3.5.13)
 
 devDependencies:
   '@vitejs/plugin-vue':
@@ -1420,8 +1420,8 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vue-fluid-dnd@0.11.1(vue@3.5.13):
-    resolution: {integrity: sha512-zQubgetvjExu6E01qmNUJ1qg1Fv8VUTOd8HJ6lBJUHKVhNE3L3ytPuQUQ4vv+JejCFIQuR/XMeRntmussoE/sA==}
+  /vue-fluid-dnd@0.11.3(vue@3.5.13):
+    resolution: {integrity: sha512-YMJHIzQq8OBoE+rpnZ74OCwt4KmF8zBTIn48cc8Z/ui/xa+TiLLFEj5hz96QseiFb8WhIJ8VRTlMNdOL26538A==}
     peerDependencies:
       vue: '>=3.4.0'
     dependencies:
