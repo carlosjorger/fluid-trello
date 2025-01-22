@@ -58,7 +58,7 @@ onMounted(()=>{
 </script>
 <template>
   <div
-    class="flex gap-2 flex-col p-2 bg-emerald-900 w-64 rounded-2xl"
+    class="flex gap-2 flex-col p-2 bg-emerald-900 min-w-64 rounded-2xl"
   >
   <div class="px-2 mt-1 relative min-h-8" v-clickOutside="endEditingContainerName">
     <textarea

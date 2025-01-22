@@ -33,7 +33,7 @@ const { parent } = useDragAndDrop(containers, {
 
 <template>
   <div class="flex items-start gap-4">
-    <div ref="parent"  class="flex items-start gap-4">
+    <div ref="parent"  class="flex items-start gap-4 w-full overflow-x-auto">
       <transition-group
         name="containers"
         enter-from-class="opacity-0 -translate-x-2"
@@ -64,7 +64,7 @@ const { parent } = useDragAndDrop(containers, {
         placeholder="Name of the container..."
       />
       <button 
-        class="bg-emerald-900 hover:bg-white/30 border-0" 
+        class="bg-white/25 hover:bg-white/15 transition-colors border-0 w-60" 
         @click="startAddingContainer"
         >
         <span v-if="!addingContainer"> Add another container</span>
@@ -74,3 +74,5 @@ const { parent } = useDragAndDrop(containers, {
   </div>
 </template>
 <!-- TODO: save on local storage -->
+<!-- TODO: add styles to scroll -->
+<!-- TODO: add cart delete option -->
