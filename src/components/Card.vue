@@ -20,7 +20,7 @@
 </script>
 <template>
     <div 
-        class="rounded-lg shadow p-2 bg-slate-300/40 text-left relative border-2 transition-colors" 
+        class="rounded-lg shadow p-2 m-1 bg-slate-300/40 text-left relative border-2 transition-colors" 
         :class="{
             'border-white' : editCard,
             'border-white/0 hover:border-white' : !editCard,

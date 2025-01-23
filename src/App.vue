@@ -33,7 +33,7 @@ const { parent } = useDragAndDrop(containers, {
 
 <template>
   <div class="flex items-start gap-4">
-    <div ref="parent"  class="flex items-start gap-4 w-full overflow-x-auto">
+    <div ref="parent"  class="flex items-start gap-4 w-full overflow-x-auto fluid-trello-container py-2">
       <transition-group
         name="containers"
         enter-from-class="opacity-0 -translate-x-2"
@@ -74,5 +74,10 @@ const { parent } = useDragAndDrop(containers, {
   </div>
 </template>
 <!-- TODO: save on local storage -->
-<!-- TODO: add styles to scroll -->
-<!-- TODO: add cart delete option -->
+<!-- TODO: add cart delete option --> 
+ <style>
+/* Define the thumb style */
+.fluid-trello-container {
+  scrollbar-color: rgb(16 185 129) rgb(6 78 59);
+}
+</style>
