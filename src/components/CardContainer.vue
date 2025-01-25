@@ -10,14 +10,20 @@ const { container } = defineProps<{ container: Container }>();
 const currentCard = ref("");
 const cards = ref(container.cards);
 const editContainerName = ref(false)
-
+  const emit = defineEmits<{
+        (e: 'showEditOptions',
+        show:boolean, 
+        options:{
+          deleteCard?:()=>void
+        }): void
+    }>()
 const addCart = () => {
   if (currentCard.value) {
     container.cards.push(currentCard.value);
     currentCard.value = "";
   }
 };
-const { parent } = useDragAndDrop(cards,{
+const { parent, removeAt } = useDragAndDrop(cards,{
   droppableGroup:'cards',
   droppableClass:'droppable-cards-container'
 });
@@ -46,6 +52,15 @@ function startEditingContainerName(){
 function endEditingContainerName(){
   editContainerName.value = false
 }
+function showEditingCard(index:number, show:boolean, closeCardEdit: () => void){
+   emit('showEditOptions', show, {
+    deleteCard: () => { 
+      removeAt(index);
+      closeCardEdit();
+    }
+  })
+}
+
 onMounted(()=>{
   observer.value = new MutationObserver(classMutationCallback)
   if (parent.value) {
@@ -80,6 +95,7 @@ onMounted(()=>{
       :index="index"
       v-model="cards[index]"
       :draggingOverContainer
+      @showEditOptions="(show, closeCardEdit)=>showEditingCard(index,show,closeCardEdit)"
       >
     </card>
   </div>

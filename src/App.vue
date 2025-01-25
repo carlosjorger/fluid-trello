@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import CardContainer from "./components/CardContainer.vue";
-import { Container } from "./components";
+import { Container, editOptions } from "./components";
 import { useDragAndDrop } from "vue-fluid-dnd";
-
 const containers = ref([] as Container[]);
 const addingContainer = ref(false);
+const showingEditOptions = ref(false);
+const deleteCardCommand = ref<()=>void>()
 
 const getEmptyContainer = (): Container => {
   const ids = containers.value.map(({id})=>id);
@@ -29,10 +30,26 @@ const startAddingContainer = () => {
 const { parent } = useDragAndDrop(containers, {
   direction: "horizontal"
 });
+function showEditOptions( 
+        show:boolean, 
+        options:{
+          deleteCard?:()=>void
+        }){
+  showingEditOptions.value = show
+  const { deleteCard } = options
+  deleteCardCommand.value = ()=>{
+    deleteCard&&deleteCard()
+    showingEditOptions.value = false;
+  }
+            
+}
 </script>
 
 <template>
-  <div class="flex items-start gap-4">
+  <div v-if="showingEditOptions" :id="editOptions"  class="absolute my-2">
+    <button @click="deleteCardCommand">Remove</button>
+  </div>
+  <div class="flex items-start gap-4 m-8">
     <div ref="parent"  class="flex items-start gap-4 w-full overflow-x-auto fluid-trello-container py-2">
       <transition-group
         name="containers"
@@ -47,6 +64,7 @@ const { parent } = useDragAndDrop(containers, {
           :index="index"
           :ref="container.name"
           :key="container.id"
+          @showEditOptions="(show,options)=>showEditOptions(show, options)"
         />
       </transition-group>
     </div>

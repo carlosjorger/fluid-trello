@@ -3,3 +3,4 @@ export type Container = {
   name: string;
   cards: string[];
 };
+export const editOptions = "edit-options";
