@@ -1,10 +1,11 @@
 <script setup lang="ts">
     import { ref,defineModel, watch } from 'vue';
     import EditIcon from './icons/EditIcon.vue';
-import { editOptions } from '.';
+    import { editOptions } from '.';
 
     const emit = defineEmits<{
-        (e: 'showEditOptions',show:boolean,closeDropdown: () => void): void
+        (e: 'showEditOptions',show:boolean,closeDropdown: () => void): void,
+        (e: 'closeEditOptions'): void
     }>()
 
     const model = defineModel({ type: String })
@@ -21,6 +22,7 @@ import { editOptions } from '.';
     }
     const closeDropdown = () => {
         editCard.value = false;
+        emit('closeEditOptions');
     };
     function startEditingCard(event:MouseEvent){
         editCard.value = true
@@ -29,35 +31,39 @@ import { editOptions } from '.';
             emit('showEditOptions',true, closeDropdown)
         }
     }
-    watch(editCard, (value)=>{
-        if (value) {
-            const editOptionsElement = document.querySelector(`#${editOptions}`) as HTMLElement| undefined
+    function updateOptionsElement(){
+        const editOptionsElement = document.querySelector(`#${editOptions}`) as HTMLElement| undefined
             const cardElementValue = cardElement.value
             if (cardElementValue&& editOptionsElement) {
                 const rectCard = cardElementValue.getBoundingClientRect()
                 const {top, left, height, width} = rectCard
                 editOptionsElement.style.transform = `translate(${left + width}px, ${top - height}px)`
             }
+    }
+    watch(editCard, (value)=>{
+        if (value) {
+            updateOptionsElement()
         }
     })
 </script>
 <template>
     <div 
-        class="rounded-lg shadow p-2 m-1 bg-slate-300/40 text-left relative border-2 transition-colors" 
-        :class="{
-            'border-white' : editCard,
-            'border-white/0 hover:border-white' : !editCard,
-        }" 
+        class="shadow m-1 bg-slate-300/40 text-left rounded-lg" 
         v-on:mouseenter="cardEnter"  
         v-on:mouseleave="cardLeave" 
         v-clickOutside="closeDropdown"
         ref="cardElement"
         >
-        <input v-if="editCard" v-focus v-model="model" class="resize-none outline-none border-none bg-transparent"/>
-        <div v-else>{{ model }}</div>
-        <Transition>
-            <button @click="startEditingCard" v-if="showEdit&&!editCard&&!draggingOverContainer" class="absolute right-1 bg-white/0 top-1 p-1 rounded-full hover:bg-white/10 border-none transition-colors"><edit-icon/></button>
-        </Transition>
+        <div class="p-2 rounded-lg relative border-2 transition-colors" :class="{
+            'border-white' : editCard,
+            'border-white/0 hover:border-white' : !editCard,
+            }" >
+            <input v-if="editCard" v-focus v-model="model" class="resize-none outline-none border-none bg-transparent"/>
+            <div v-else>{{ model }}</div>
+            <Transition>
+                <button @click="startEditingCard" v-if="showEdit&&!editCard&&!draggingOverContainer" class="absolute right-1 bg-white/0 top-1 p-1 rounded-full hover:bg-white/10 border-none transition-colors"><edit-icon/></button>
+            </Transition>
+        </div>
     </div>
 </template>
 <style scoped>

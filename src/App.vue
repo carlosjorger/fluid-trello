@@ -30,16 +30,19 @@ const startAddingContainer = () => {
 const { parent } = useDragAndDrop(containers, {
   direction: "horizontal"
 });
+function closeEditOptions(){
+  showingEditOptions.value = false;
+}
 function showEditOptions( 
-        show:boolean, 
-        options:{
-          deleteCard?:()=>void
-        }){
+  show:boolean, 
+  options:{
+    deleteCard?:()=>void
+  }){
   showingEditOptions.value = show
   const { deleteCard } = options
   deleteCardCommand.value = ()=>{
     deleteCard&&deleteCard()
-    showingEditOptions.value = false;
+    closeEditOptions()
   }
             
 }
@@ -65,6 +68,7 @@ function showEditOptions(
           :ref="container.name"
           :key="container.id"
           @showEditOptions="(show,options)=>showEditOptions(show, options)"
+          @close-edit-options="closeEditOptions"
         />
       </transition-group>
     </div>

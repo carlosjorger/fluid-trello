@@ -15,8 +15,10 @@ const editContainerName = ref(false)
         show:boolean, 
         options:{
           deleteCard?:()=>void
-        }): void
+        }): void,
+        (e: 'closeEditOptions'): void
     }>()
+const editingCards = new Map<string, boolean>()
 const addCart = () => {
   if (currentCard.value) {
     container.cards.push(currentCard.value);
@@ -53,6 +55,8 @@ function endEditingContainerName(){
   editContainerName.value = false
 }
 function showEditingCard(index:number, show:boolean, closeCardEdit: () => void){
+  const value = cards.value[index]
+  editingCards.set(value, true)
    emit('showEditOptions', show, {
     deleteCard: () => { 
       removeAt(index);
@@ -60,7 +64,15 @@ function showEditingCard(index:number, show:boolean, closeCardEdit: () => void){
     }
   })
 }
-
+function closeEditOptions(index:number){
+  const value = cards.value[index]
+  editingCards.set(value, false)
+  const editingCardValues = [... editingCards.values()]
+  const notEditing = editingCardValues.every(editingCard => !editingCard);
+  if (notEditing) {
+    emit('closeEditOptions')
+  }
+}
 onMounted(()=>{
   observer.value = new MutationObserver(classMutationCallback)
   if (parent.value) {
@@ -96,6 +108,7 @@ onMounted(()=>{
       v-model="cards[index]"
       :draggingOverContainer
       @showEditOptions="(show, closeCardEdit)=>showEditingCard(index,show,closeCardEdit)"
+      @closeEditOptions="() => closeEditOptions(index)"
       >
     </card>
   </div>
