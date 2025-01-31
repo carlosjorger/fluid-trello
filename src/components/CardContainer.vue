@@ -101,7 +101,7 @@ onMounted(()=>{
       :class="{
         'not-editing':!editContainerName
       }"
-      class="font-bold resize-none py-1 outline-none shadow-[inset_0_0_0_2px_rgba(0,0,0,0.3)] rounded-md shadow-white border-none opacity-100 bg-transparent absolute right-0 left-0 pl-2 max-h-12 transition-[background-color,_border-color,_box-shadow] duration-200" v-model="container.name"/>
+      class="font-bold resize-none py-1 outline-hidden shadow-[inset_0_0_0_2px_rgba(0,0,0,0.3)] rounded-md shadow-white border-none opacity-100 bg-transparent absolute right-0 left-0 pl-2 max-h-12 transition-[background-color,_border-color,_box-shadow] duration-200" v-model="container.name"/>
     <h2 
       class="font-bold text-left w-full py-1" 
       :hidden="editContainerName"
@@ -123,14 +123,14 @@ onMounted(()=>{
   </div>
 
     <textarea
-      class="rounded-lg bg-lime-50/80 shadow p-3 resize-none"
+      class="rounded-lg bg-lime-50/80 shadow-sm p-3 resize-none"
       type="text"
       v-model="currentCard"
       placeholder="Add a new cart..."
       autofocus
     />
     <button
-      class="hover:bg-white/30 bg-inherit rounded text-white flex gap-5 duration-200 transition-colors border-0"
+      class="hover:bg-white/30 bg-inherit rounded-sm text-white flex gap-5 duration-200 transition-colors border-0"
       v-on:click="addCart"
     >
       <plus-icon /> Add a cart

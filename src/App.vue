@@ -90,7 +90,7 @@ function showEditOptions(
       <input
         v-if="addingContainer"
         type="text"
-        class="bg-lime-50/80 shadow text-black rounded-sm px-3 py-1"
+        class="bg-lime-50/80 shadow-sm text-black rounded-xs px-3 py-1"
         v-model="containerToAdd.name"
         placeholder="Name of the container..."
       />
