@@ -6,12 +6,14 @@ import { useDragAndDrop } from "vue-fluid-dnd";
 const containers = ref([] as Container[]);
 const addingContainer = ref(false);
 const showingEditOptions = ref(false);
+const editOptionsContainer = ref<number>();
+
 const deleteCardCommand = ref<()=>void>()
 
 const getEmptyContainer = (): Container => {
   const ids = containers.value.map(({id})=>id);
   const maxId = ids.length == 0? 0 :Math.max(...ids);
-  return ({ name: "", cards: [], id: maxId + 1 })
+  return (new Container(maxId + 1 ))
 };
 
 const containerToAdd = ref<Container>(getEmptyContainer());
@@ -30,19 +32,24 @@ const startAddingContainer = () => {
 const { parent } = useDragAndDrop(containers, {
   direction: "horizontal"
 });
-function closeEditOptions(){
-  showingEditOptions.value = false;
+function closeEditOptions(containerId:number){
+  if (containerId == editOptionsContainer.value) {
+    showingEditOptions.value = false;
+  }
 }
 function showEditOptions( 
-  show:boolean, 
+  containerId:number, 
   options:{
     deleteCard?:()=>void
   }){
-  showingEditOptions.value = show
+  editOptionsContainer.value = containerId
+  showingEditOptions.value = true
   const { deleteCard } = options
   deleteCardCommand.value = ()=>{
     deleteCard&&deleteCard()
-    closeEditOptions()
+    if (editOptionsContainer.value) {
+      closeEditOptions(editOptionsContainer.value)
+    }
   }
             
 }
@@ -67,8 +74,8 @@ function showEditOptions(
           :index="index"
           :ref="container.name"
           :key="container.id"
-          @showEditOptions="(show,options)=>showEditOptions(show, options)"
-          @close-edit-options="closeEditOptions"
+          @showEditOptions="(containerId,options)=>showEditOptions(containerId, options)"
+          @close-edit-options="(containerId)=>closeEditOptions(containerId)"
         />
       </transition-group>
     </div>

@@ -12,16 +12,24 @@ const cards = ref(container.cards);
 const editContainerName = ref(false)
   const emit = defineEmits<{
         (e: 'showEditOptions',
-        show:boolean, 
+        containerId : number, 
         options:{
           deleteCard?:()=>void
         }): void,
-        (e: 'closeEditOptions'): void
+        (e: 'closeEditOptions', containerId : number): void
     }>()
-const editingCards = new Map<string, boolean>()
+const editingCards = new Map<number, boolean>()
+ function addCard(text:string){
+    const ids = container.cards.map(({id})=>id);
+    const maxId = ids.length == 0? 0 :Math.max(...ids);
+    container.cards.push({
+      id: maxId +1,
+      text
+    })
+  }
 const addCart = () => {
   if (currentCard.value) {
-    container.cards.push(currentCard.value);
+    addCard(currentCard.value)
     currentCard.value = "";
   }
 };
@@ -54,10 +62,10 @@ function startEditingContainerName(){
 function endEditingContainerName(){
   editContainerName.value = false
 }
-function showEditingCard(index:number, show:boolean, closeCardEdit: () => void){
+function showEditingCard(index:number, closeCardEdit: () => void){
   const value = cards.value[index]
-  editingCards.set(value, true)
-   emit('showEditOptions', show, {
+  editingCards.set(value.id, true)
+   emit('showEditOptions', container.id, {
     deleteCard: () => { 
       removeAt(index);
       closeCardEdit();
@@ -66,11 +74,11 @@ function showEditingCard(index:number, show:boolean, closeCardEdit: () => void){
 }
 function closeEditOptions(index:number){
   const value = cards.value[index]
-  editingCards.set(value, false)
+  editingCards.set(value.id, false)
   const editingCardValues = [... editingCards.values()]
   const notEditing = editingCardValues.every(editingCard => !editingCard);
   if (notEditing) {
-    emit('closeEditOptions')
+    emit('closeEditOptions', container.id)
   }
 }
 onMounted(()=>{
@@ -105,9 +113,10 @@ onMounted(()=>{
     <card
       v-for="(_, index) in cards"
       :index="index"
-      v-model="cards[index]"
+      v-model="cards[index].text"
+      :key="cards[index].id"
       :draggingOverContainer
-      @showEditOptions="(show, closeCardEdit)=>showEditingCard(index,show,closeCardEdit)"
+      @showEditOptions="(closeCardEdit)=>showEditingCard(index,closeCardEdit)"
       @closeEditOptions="() => closeEditOptions(index)"
       >
     </card>

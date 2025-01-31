@@ -1,7 +1,13 @@
-export type Container = {
+export class Container {
   id:number;
   name: string;
-  cards: string[];
+  cards: Card[];
+  constructor(id:number) {
+    this.id = id;
+    this.name = '';
+    this.cards = []
+  }
+
 };
 export type Card = {
   id: number;

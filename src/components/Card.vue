@@ -4,7 +4,7 @@
     import { editOptions } from '.';
 
     const emit = defineEmits<{
-        (e: 'showEditOptions',show:boolean,closeDropdown: () => void): void,
+        (e: 'showEditOptions',closeDropdown: () => void): void,
         (e: 'closeEditOptions'): void
     }>()
 
@@ -21,14 +21,16 @@
         showEdit.value = false;
     }
     const closeDropdown = () => {
-        editCard.value = false;
-        emit('closeEditOptions');
+        if (editCard.value) {
+            editCard.value = false;
+            emit('closeEditOptions');
+        }
     };
     function startEditingCard(event:MouseEvent){
         editCard.value = true
         const card = (event.currentTarget as Element).parentElement
         if (card) {
-            emit('showEditOptions',true, closeDropdown)
+            emit('showEditOptions', closeDropdown)
         }
     }
     function updateOptionsElement(){
