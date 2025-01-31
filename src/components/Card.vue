@@ -60,7 +60,7 @@
             'border-white' : editCard,
             'border-white/0 hover:border-white' : !editCard,
             }" >
-            <input v-if="editCard" v-focus v-model="model" class="resize-none outline-none border-none bg-transparent"/>
+            <input v-if="editCard" v-focus v-model="model" class="resize-none outline-none border-none bg-transparent field-sizing-content"/>
             <div v-else>{{ model }}</div>
             <Transition>
                 <button @click="startEditingCard" v-if="showEdit&&!editCard&&!draggingOverContainer" class="absolute right-1 bg-white/0 top-1 p-1 rounded-full hover:bg-white/10 border-none transition-colors"><edit-icon/></button>
