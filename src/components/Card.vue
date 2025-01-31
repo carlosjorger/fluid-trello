@@ -38,8 +38,8 @@
             const cardElementValue = cardElement.value
             if (cardElementValue&& editOptionsElement) {
                 const rectCard = cardElementValue.getBoundingClientRect()
-                const {top, left, height, width} = rectCard
-                editOptionsElement.style.transform = `translate(${left + width}px, ${top - height}px)`
+                const {top, left, width} = rectCard
+                editOptionsElement.style.transform = `translate(${left + width}px, ${top - 8}px)`
             }
     }
     watch(editCard, (value)=>{

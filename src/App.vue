@@ -56,8 +56,10 @@ function showEditOptions(
 </script>
 
 <template>
-  <div v-if="showingEditOptions" :id="editOptions"  class="absolute my-2">
-    <button @click="deleteCardCommand">Remove</button>
+  <div v-if="showingEditOptions" class="bg-[hsla(0,_0%,_0%,_0.6)] h-screen fixed top-0 bottom-0 left-0 right-0">
+    <div :id="editOptions" class="m-2 w-fit">
+        <button class="bg-[#66837d]" @click="deleteCardCommand">Remove</button>
+    </div>
   </div>
   <div class="flex items-start gap-4 m-8">
     <div ref="parent"  class="flex items-start gap-4 w-full overflow-x-auto fluid-trello-container py-2">
