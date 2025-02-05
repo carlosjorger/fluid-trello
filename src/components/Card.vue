@@ -2,7 +2,7 @@
     import { ref,defineModel, watch } from 'vue';
     import EditIcon from './icons/EditIcon.vue';
     import { editOptions } from '.';
-
+    
     const emit = defineEmits<{
         (e: 'showEditOptions',closeDropdown: () => void): void,
         (e: 'closeEditOptions'): void
@@ -60,10 +60,10 @@
             'border-white' : editCard,
             'border-white/0 hover:border-white' : !editCard,
             }" >
-            <input v-if="editCard" v-focus v-model="model" class="resize-none outline-hidden border-none bg-transparent field-sizing-content"/>
+            <input v-if="editCard" v-focus v-model="model" class="resize-none outline-hidden border-none bg-transparent"/>
             <div v-else>{{ model }}</div>
             <Transition>
-                <button @click="startEditingCard" v-if="showEdit&&!editCard&&!draggingOverContainer" class="absolute right-1 bg-white/0 top-1 p-1 rounded-full hover:bg-white/10 border-none transition-colors"><edit-icon/></button>
+                <button @click="startEditingCard" v-if="showEdit&&!editCard&&!draggingOverContainer" class="absolute right-1 bg-white/0 top-1 p-1 rounded-full hover:bg-white/10 border-none transition-colors a"> <edit-icon/></button>
             </Transition>
         </div>
     </div>
@@ -77,4 +77,5 @@
     .v-leave-to {
         opacity: 0;
     }
+   
 </style>

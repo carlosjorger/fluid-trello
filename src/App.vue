@@ -3,6 +3,9 @@ import { ref } from "vue";
 import CardContainer from "./components/CardContainer.vue";
 import { Container, editOptions } from "./components";
 import { useDragAndDrop } from "vue-fluid-dnd";
+import CustomButton from './components/CustomButton.vue';
+
+
 const containers = ref([] as Container[]);
 const addingContainer = ref(false);
 const showingEditOptions = ref(false);
@@ -58,7 +61,7 @@ function showEditOptions(
 <template>
   <div v-if="showingEditOptions" class="bg-[hsla(0,_0%,_0%,_0.6)] h-screen fixed top-0 bottom-0 left-0 right-0 z-10">
     <div :id="editOptions" class="m-2 w-fit">
-        <button class="bg-[#66837d]" @click="deleteCardCommand">Remove</button>
+        <custom-button class="bg-[#66837d]" @click="deleteCardCommand">Remove</custom-button>
     </div>
   </div>
   <div class="flex items-start gap-4 p-8">
@@ -94,13 +97,13 @@ function showEditOptions(
         v-model="containerToAdd.name"
         placeholder="Name of the container..."
       />
-      <button 
+      <custom-button 
         class="bg-white/25 hover:bg-white/15 transition-colors border-0 w-60" 
         @click="startAddingContainer"
         >
         <span v-if="!addingContainer"> Add another container</span>
         <span v-else>Add container</span>
-      </button>
+      </custom-button>
     </div>
   </div>
 </template>

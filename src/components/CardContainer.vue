@@ -4,6 +4,7 @@ import PlusIcon from "./icons/PlusIcon.vue";
 import { useDragAndDrop } from "vue-fluid-dnd";
 import { Container } from ".";
 import Card from "./Card.vue";
+import CustomButton from './CustomButton.vue';
 
 const { container } = defineProps<{ container: Container }>();
 
@@ -129,12 +130,12 @@ onMounted(()=>{
       placeholder="Add a new cart..."
       autofocus
     />
-    <button
-      class="hover:bg-white/30 bg-inherit rounded-sm text-white flex gap-5 duration-200 transition-colors border-0"
+    <custom-button
+      class="hover:bg-white/30 bg-inherit text-white flex gap-5 duration-200 transition-colors border-0"
       v-on:click="addCart"
     >
       <plus-icon /> Add a cart
-    </button>
+    </custom-button>
   </div>
 </template>
 <style>
