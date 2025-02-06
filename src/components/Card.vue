@@ -4,7 +4,7 @@
     import { editOptions } from '.';
     
     const emit = defineEmits<{
-        (e: 'showEditOptions',closeDropdown: () => void): void,
+        (e: 'showEditOptions', cardText: string, closeDropdown: () => void): void,
         (e: 'closeEditOptions'): void
     }>()
 
@@ -26,11 +26,11 @@
             emit('closeEditOptions');
         }
     };
-    function startEditingCard(event:MouseEvent){
+    function startEditingCard(event:MouseEvent, cardText:string){
         editCard.value = true
         const card = (event.currentTarget as Element).parentElement
         if (card) {
-            emit('showEditOptions', closeDropdown)
+            emit('showEditOptions', cardText, closeDropdown)
         }
     }
     function updateOptionsElement(){
@@ -39,7 +39,11 @@
             if (cardElementValue&& editOptionsElement) {
                 const rectCard = cardElementValue.getBoundingClientRect()
                 const {top, left, width} = rectCard
-                editOptionsElement.style.transform = `translate(${left + width}px, ${top - 8}px)`
+                editOptionsElement.style.transform = `translate(${left - 8}px, ${top - 8}px)`
+                const editingCard = editOptionsElement.querySelector('#editing-card') as HTMLElement| undefined
+                if (editingCard) {
+                    editingCard.style.width = `${width}px`
+                }
             }
     }
     watch(editCard, (value)=>{
@@ -56,14 +60,10 @@
         v-clickOutside="closeDropdown"
         ref="cardElement"
         >
-        <div class="p-2 rounded-lg relative border-2 transition-colors" :class="{
-            'border-white' : editCard,
-            'border-white/0 hover:border-white' : !editCard,
-            }" >
-            <input v-if="editCard" v-focus v-model="model" class="resize-none outline-hidden border-none bg-transparent"/>
-            <div v-else>{{ model }}</div>
+        <div class="p-2 rounded-lg relative border-2 transition-colors border-white/0 hover:border-white">
+            <div>{{ model }}</div>
             <Transition>
-                <button @click="startEditingCard" v-if="showEdit&&!editCard&&!draggingOverContainer" class="absolute right-1 bg-white/0 top-1 p-1 rounded-full hover:bg-white/10 border-none transition-colors a"> <edit-icon/></button>
+                <button @click="(event) => startEditingCard(event,model??'')" v-if="showEdit&&!editCard&&!draggingOverContainer" class="absolute right-1 bg-white/0 top-1 p-1 rounded-full hover:bg-white/10 border-none transition-colors a"> <edit-icon/></button>
             </Transition>
         </div>
     </div>

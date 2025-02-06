@@ -13,7 +13,8 @@ const cards = ref(container.cards);
 const editContainerName = ref(false)
   const emit = defineEmits<{
         (e: 'showEditOptions',
-        containerId : number, 
+        containerId : number,
+        cardText: string, 
         options:{
           deleteCard?:()=>void
         }): void,
@@ -63,10 +64,10 @@ function startEditingContainerName(){
 function endEditingContainerName(){
   editContainerName.value = false
 }
-function showEditingCard(index:number, closeCardEdit: () => void){
+function showEditingCard(index:number,cardText: string ,closeCardEdit: () => void){
   const value = cards.value[index]
   editingCards.set(value.id, true)
-   emit('showEditOptions', container.id, {
+   emit('showEditOptions', container.id, cardText,{
     deleteCard: () => { 
       removeAt(index);
       closeCardEdit();
@@ -117,7 +118,7 @@ onMounted(()=>{
       v-model="cards[index].text"
       :key="cards[index].id"
       :draggingOverContainer
-      @showEditOptions="(closeCardEdit)=>showEditingCard(index,closeCardEdit)"
+      @showEditOptions="(cardText, closeCardEdit) => showEditingCard(index, cardText, closeCardEdit)"
       @closeEditOptions="() => closeEditOptions(index)"
       >
     </card>

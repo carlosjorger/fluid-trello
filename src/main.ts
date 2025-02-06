@@ -1,6 +1,7 @@
 import { createApp, DirectiveBinding } from 'vue'
 import './style.css'
 import App from './App.vue'
+import { editOptions } from './components'
 
 const app = createApp(App)
 app.directive('clickOutside',{
@@ -9,7 +10,10 @@ app.directive('clickOutside',{
         el.clickOutsideEvent = function(event:MouseEvent) {
             // Check if the clicked element is neither the element
             // to which the directive is applied nor its child
-            if (!(el === event.target || el.contains(event.target))) {
+            const editOptionsElement = document.querySelector(`#${editOptions}`)
+            const targetNode = event.target as Node|undefined
+            if (targetNode &&!(el === targetNode || el.contains(targetNode))
+                && !(!editOptionsElement || editOptionsElement === targetNode || editOptionsElement.contains(targetNode))) {
                 // Invoke the provided method
                 binding.value(event);
             }

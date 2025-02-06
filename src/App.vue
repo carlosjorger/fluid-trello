@@ -10,7 +10,7 @@ const containers = ref([] as Container[]);
 const addingContainer = ref(false);
 const showingEditOptions = ref(false);
 const editOptionsContainer = ref<number>();
-
+const currentEditingCardText = ref('')
 const deleteCardCommand = ref<()=>void>()
 
 const getEmptyContainer = (): Container => {
@@ -41,16 +41,20 @@ function closeEditOptions(containerId:number){
   }
 }
 function showEditOptions( 
-  containerId:number, 
+  containerId:number,
+  cardText: string,
   options:{
     deleteCard?:()=>void
   }){
   editOptionsContainer.value = containerId
   showingEditOptions.value = true
+  currentEditingCardText.value = cardText
+
   const { deleteCard } = options
   deleteCardCommand.value = ()=>{
     deleteCard&&deleteCard()
     if (editOptionsContainer.value) {
+      // TODO: launhc edit card event
       closeEditOptions(editOptionsContainer.value)
     }
   }
@@ -60,9 +64,10 @@ function showEditOptions(
 
 <template>
   <div v-if="showingEditOptions" class="bg-[hsla(0,_0%,_0%,_0.6)] h-screen fixed top-0 bottom-0 left-0 right-0 z-10">
-    <div :id="editOptions" class="m-2 w-fit">
+    <div :id="editOptions" class="m-2 w-fit flex gap-2">
+        <input id="editing-card" v-focus type="text" class="border-white border-2 rounded-lg p-2" v-model="currentEditingCardText"> 
         <custom-button class="bg-[#66837d]" @click="deleteCardCommand">Remove</custom-button>
-    </div>
+      </div>
   </div>
   <div class="flex items-start gap-4 p-8">
     <div ref="parent"  class="flex items-start gap-4 w-full overflow-x-auto fluid-trello-container py-2">
@@ -79,7 +84,7 @@ function showEditOptions(
           :index="index"
           :ref="container.name"
           :key="container.id"
-          @showEditOptions="(containerId,options)=>showEditOptions(containerId, options)"
+          @showEditOptions="(containerId, cardText, options)=>showEditOptions(containerId, cardText, options)"
           @close-edit-options="(containerId)=>closeEditOptions(containerId)"
         />
       </transition-group>
@@ -108,7 +113,6 @@ function showEditOptions(
   </div>
 </template>
 <!-- TODO: save on local storage -->
-<!-- TODO: add cart delete option --> 
  <style>
 /* Define the thumb style */
 .fluid-trello-container {
