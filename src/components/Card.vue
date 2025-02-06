@@ -4,7 +4,7 @@
     import { editOptions } from '.';
     
     const emit = defineEmits<{
-        (e: 'showEditOptions', cardText: string, closeDropdown: () => void): void,
+        (e: 'showEditOptions', cardText: string, closeDropdown: () => void, updateCard:(cardText:string)=>void): void,
         (e: 'closeEditOptions'): void
     }>()
 
@@ -26,11 +26,14 @@
             emit('closeEditOptions');
         }
     };
+    function updateCard(cardText:string){
+        model.value = cardText
+    }
     function startEditingCard(event:MouseEvent, cardText:string){
         editCard.value = true
         const card = (event.currentTarget as Element).parentElement
         if (card) {
-            emit('showEditOptions', cardText, closeDropdown)
+            emit('showEditOptions', cardText, closeDropdown, updateCard)
         }
     }
     function updateOptionsElement(){

@@ -12,7 +12,7 @@ const showingEditOptions = ref(false);
 const editOptionsContainer = ref<number>();
 const currentEditingCardText = ref('')
 const deleteCardCommand = ref<()=>void>()
-
+const updateCardCommand = ref<(cardText:string)=>void>()
 const getEmptyContainer = (): Container => {
   const ids = containers.value.map(({id})=>id);
   const maxId = ids.length == 0? 0 :Math.max(...ids);
@@ -38,27 +38,31 @@ const { parent } = useDragAndDrop(containers, {
 function closeEditOptions(containerId:number){
   if (containerId == editOptionsContainer.value) {
     showingEditOptions.value = false;
+    updateCardCommand.value
+    &&updateCardCommand.value(currentEditingCardText.value)
   }
 }
 function showEditOptions( 
   containerId:number,
   cardText: string,
   options:{
-    deleteCard?:()=>void
+    deleteCard?:()=>void,
+    updateCard?:(cardText:string)=>void
   }){
   editOptionsContainer.value = containerId
   showingEditOptions.value = true
   currentEditingCardText.value = cardText
 
-  const { deleteCard } = options
+  const { deleteCard, updateCard } = options
   deleteCardCommand.value = ()=>{
     deleteCard&&deleteCard()
     if (editOptionsContainer.value) {
-      // TODO: launhc edit card event
       closeEditOptions(editOptionsContainer.value)
     }
   }
-            
+  updateCardCommand.value = (cardText:string)=>{
+    updateCard&&updateCard(cardText)
+  }         
 }
 </script>
 
