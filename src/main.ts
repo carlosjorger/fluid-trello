@@ -13,7 +13,10 @@ app.directive('clickOutside',{
             const editOptionsElement = document.querySelector(`#${editOptions}`)
             const targetNode = event.target as Node|undefined
             if (targetNode &&!(el === targetNode || el.contains(targetNode))
-                && !(!editOptionsElement || editOptionsElement === targetNode || editOptionsElement.contains(targetNode))) {
+                && !(editOptionsElement === targetNode || 
+                        (editOptionsElement && editOptionsElement.contains(targetNode))
+                    )
+                ) {
                 // Invoke the provided method
                 binding.value(event);
             }
