@@ -115,7 +115,7 @@ onMounted(()=>{
      {{ container.name }}
     </h2>
   </div>
-  <div ref="parent" class="p-1 rounded-md transition-[color,_background-color,_border-color,_min-height] min-h-6 ease-in duration-200 overflow-auto max-h-52 card-container">
+  <div ref="parent" class="p-1 rounded-md transition-[color,_background-color,_border-color] min-h-12 card-container">
     <card
       v-for="(_, index) in cards"
       :index="index"
