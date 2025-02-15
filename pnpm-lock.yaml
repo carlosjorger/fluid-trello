@@ -9,8 +9,8 @@ dependencies:
     specifier: 3.5.13
     version: 3.5.13(typescript@5.2.2)
   vue-fluid-dnd:
-    specifier: ^0.11.5
-    version: 0.11.5(vue@3.5.13)
+    specifier: ^0.11.6
+    version: 0.11.6(vue@3.5.13)
 
 devDependencies:
   '@tailwindcss/postcss':
@@ -1005,8 +1005,8 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vue-fluid-dnd@0.11.5(vue@3.5.13):
-    resolution: {integrity: sha512-yDXG9lY6CR2GJTO76PvmbClqqLVCuzYY0wIcUJrUcnoRGZ4bRVLLvmFvS0SVHIBPYJvIVPd7oMYqKsBMkDHGNQ==}
+  /vue-fluid-dnd@0.11.6(vue@3.5.13):
+    resolution: {integrity: sha512-pvPfg0WK7s66APbmsKoansXoPW990A27oMaFGN+PV/brYnGdlEGfpNJDpumDnTqI2SRATfiookkQAcrDz7cgqA==}
     peerDependencies:
       vue: '>=3.4.0'
     dependencies:
