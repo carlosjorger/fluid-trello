@@ -2,11 +2,11 @@
 import { onMounted, ref, useTemplateRef } from "vue";
 import PlusIcon from "./icons/PlusIcon.vue";
 import { useDragAndDrop } from "vue-fluid-dnd";
-import { Container } from ".";
-import Card from "./Card.vue";
+import { AppData, Card, Container } from ".";
 import CustomButton from './CustomButton.vue';
+import CardComponent from "./Card.vue";
 
-const { container } = defineProps<{ container: Container }>();
+const { container, appData } = defineProps<{ container: Container, appData: AppData }>();
 
 const currentCard = ref("");
 const cards = ref(container.cards);
@@ -22,16 +22,13 @@ const editContainerName = ref(false)
         (e: 'closeEditOptions', containerId : number): void
     }>()
 const editingCards = new Map<number, boolean>()
- function addCard(text:string){
-    const ids = container.cards.map(({id})=>id);
-    const maxId = ids.length == 0? 0 :Math.max(...ids);
-    insertAt(ids.length, {
-        id: maxId +1,
-        text
-    });
-  }
-   
 
+
+function addCard(text:string){
+  appData.addCardToAContainer(text, (card) =>{
+    insertAt(container.cards.length, card);
+  })
+}
 const addCart = () => {
   if (currentCard.value) {
     addCard(currentCard.value)
@@ -119,7 +116,7 @@ onMounted(()=>{
     </h2>
   </div>
   <div ref="parent" class="p-1 rounded-md transition-[color,_background-color,_border-color] min-h-12 card-container">
-    <card
+    <card-component
       v-for="(_, index) in cards"
       :index="index"
       v-model="cards[index].text"
@@ -128,8 +125,7 @@ onMounted(()=>{
       @showEditOptions="(cardText, closeCardEdit,updateCard) => showEditingCard(index, cardText, closeCardEdit, updateCard)"
       @closeEditOptions="() => closeEditOptions(index)"
       class="trello-card"
-      >
-    </card>
+      />
   </div>
 
     <textarea

@@ -1,34 +1,28 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import CardContainer from "./components/CardContainer.vue";
-import { Container, editOptions } from "./components";
+import { AppData, Container, editOptions } from "./components";
 import { useDragAndDrop } from "vue-fluid-dnd";
 import CustomButton from './components/CustomButton.vue';
 
-
-const containers = ref([] as Container[]);
+const appData = ref(new AppData())
+const containers = ref(appData.value.containers);
 const addingContainer = ref(false);
 const showingEditOptions = ref(false);
 const editOptionsContainer = ref<number>();
 const currentEditingCardText = ref('')
 const deleteCardCommand = ref<()=>void>()
 const updateCardCommand = ref<(cardText:string)=>void>()
-const getEmptyContainer = (): Container => {
-  const ids = containers.value.map(({id})=>id);
-  const maxId = ids.length == 0? 0 :Math.max(...ids);
-  return (new Container(maxId + 1 ))
-};
-
-const containerToAdd = ref<Container>(getEmptyContainer());
+const containerToAdd = ref<Container>(appData.value.getEmptyContainer());
 const startAddingContainer = () => {
   if (!addingContainer.value) {
-    containerToAdd.value = getEmptyContainer();
+    containerToAdd.value = appData.value.getEmptyContainer();
   }
   else if(!containerToAdd.value.name){
     return
   } 
   else {
-    containers.value.push(containerToAdd.value);
+    appData.value.addContainer(containerToAdd.value)
   }
   addingContainer.value = !addingContainer.value;
 };
@@ -85,6 +79,7 @@ function showEditOptions(
         <card-container
           v-for="(container, index) in containers"
           :container
+          :app-data
           :index="index"
           :ref="container.name"
           :key="container.id"
