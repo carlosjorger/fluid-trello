@@ -25,20 +25,23 @@ const editingCards = new Map<number, boolean>()
  function addCard(text:string){
     const ids = container.cards.map(({id})=>id);
     const maxId = ids.length == 0? 0 :Math.max(...ids);
-    container.cards.push({
-      id: maxId +1,
-      text
-    })
+    insertAt(ids.length, {
+        id: maxId +1,
+        text
+    });
   }
+   
+
 const addCart = () => {
   if (currentCard.value) {
     addCard(currentCard.value)
     currentCard.value = "";
   }
 };
-const { parent, removeAt } = useDragAndDrop(cards,{
+const { parent, removeAt, insertAt } = useDragAndDrop(cards,{
   droppableGroup:'cards',
-  droppableClass:'droppable-cards-container'
+  droppableClass:'droppable-cards-container',
+  insertingFromClass: 'before-insert'
 });
 const containerMame = useTemplateRef('containerMame')
 const observer = ref<MutationObserver>()
@@ -124,6 +127,7 @@ onMounted(()=>{
       :draggingOverContainer
       @showEditOptions="(cardText, closeCardEdit,updateCard) => showEditingCard(index, cardText, closeCardEdit, updateCard)"
       @closeEditOptions="() => closeEditOptions(index)"
+      class="trello-card"
       >
     </card>
   </div>
@@ -159,5 +163,11 @@ textarea{
 }
 .card-container{
   scrollbar-width: thin;
+}
+.trello-card{
+  transition: opacity 125ms ease;
+}
+.trello-card.before-insert{
+  opacity: 0;
 }
 </style>
