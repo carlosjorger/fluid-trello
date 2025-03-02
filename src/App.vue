@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import CardContainer from "./components/CardContainer.vue";
 import { AppData, Container, editOptions } from "./components";
 import { useDragAndDrop } from "vue-fluid-dnd";
@@ -14,6 +14,11 @@ const currentEditingCardText = ref('')
 const deleteCardCommand = ref<()=>void>()
 const updateCardCommand = ref<(cardText:string)=>void>()
 const containerToAdd = ref<Container>(appData.value.getEmptyContainer());
+
+
+function saveApp(){
+  appData.value.saveInLocalStorage()
+}
 const startAddingContainer = () => {
   if (!addingContainer.value) {
     containerToAdd.value = appData.value.getEmptyContainer();
@@ -23,12 +28,16 @@ const startAddingContainer = () => {
   } 
   else {
     appData.value.addContainer(containerToAdd.value)
+    saveApp();
   }
   addingContainer.value = !addingContainer.value;
 };
 const { parent } = useDragAndDrop(containers, {
   direction: "horizontal"
 });
+document.addEventListener('DOMContentLoaded',()=>{
+  containers.value = appData.value.loadLocalStorage()
+})
 function closeEditOptions(containerId:number){
   if (containerId == editOptionsContainer.value) {
     showingEditOptions.value = false;
@@ -58,6 +67,9 @@ function showEditOptions(
     updateCard&&updateCard(cardText)
   }         
 }
+watch(containers,()=>{
+  saveApp()
+},{ deep:true});
 </script>
 
 <template>
@@ -85,6 +97,7 @@ function showEditOptions(
           :key="container.id"
           @showEditOptions="(containerId, cardText, options)=>showEditOptions(containerId, cardText, options)"
           @close-edit-options="(containerId)=>closeEditOptions(containerId)"
+          @save-app="saveApp()"
         />
       </transition-group>
     </div>

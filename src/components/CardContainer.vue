@@ -2,7 +2,7 @@
 import { onMounted, ref, useTemplateRef } from "vue";
 import PlusIcon from "./icons/PlusIcon.vue";
 import { useDragAndDrop } from "vue-fluid-dnd";
-import { AppData, Card, Container } from ".";
+import { AppData, Container } from ".";
 import CustomButton from './CustomButton.vue';
 import CardComponent from "./Card.vue";
 
@@ -19,7 +19,8 @@ const editContainerName = ref(false)
           deleteCard?:()=>void,
           updateCard?:(cardText:string)=>void
         }): void,
-        (e: 'closeEditOptions', containerId : number): void
+        (e: 'closeEditOptions', containerId : number): void,
+        (e: 'saveApp'): void
     }>()
 const editingCards = new Map<number, boolean>()
 
@@ -33,6 +34,7 @@ const addCart = () => {
   if (currentCard.value) {
     addCard(currentCard.value)
     currentCard.value = "";
+    emit('saveApp')
   }
 };
 const { parent, removeAt, insertAt } = useDragAndDrop(cards,{
