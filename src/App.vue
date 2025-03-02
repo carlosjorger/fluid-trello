@@ -124,7 +124,7 @@ watch(containers,()=>{
     </div>
   </div>
 </template>
-<!-- TODO: save on local storage -->
+<!-- TODO: delete container feature -->
  <style>
 /* Define the thumb style */
 .fluid-trello-container {
