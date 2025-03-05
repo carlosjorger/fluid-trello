@@ -5,8 +5,9 @@ import { useDragAndDrop } from "vue-fluid-dnd";
 import { AppData, Container } from ".";
 import CustomButton from './CustomButton.vue';
 import CardComponent from "./Card.vue";
+import DotsIcon from "./icons/DotsIcon.vue";
 
-const { container, appData } = defineProps<{ container: Container, appData: AppData }>();
+const { container, appData, removeContainer } = defineProps<{ container: Container, appData: AppData, removeContainer: () => void }>();
 
 const currentCard = ref("");
 const cards = ref(container.cards);
@@ -24,6 +25,7 @@ const editContainerName = ref(false)
     }>()
 const editingCards = new Map<number, boolean>()
 
+const containerOptions = ref(false)
 
 function addCard(text:string){
   appData.addCardToAContainer(text, (card) =>{
@@ -67,6 +69,9 @@ function startEditingContainerName(){
 function endEditingContainerName(){
   editContainerName.value = false
 }
+function closeContainerOptions(){
+  containerOptions.value = false
+}
 function showEditingCard(index:number,cardText: string ,closeCardEdit: () => void,  updateCardEdit:(cardText:string)=>void){
   const value = cards.value[index]
   editingCards.set(value.id, true)
@@ -101,21 +106,27 @@ onMounted(()=>{
 </script>
 <template>
   <div
-    class="flex gap-2 flex-col p-2 bg-emerald-900 min-w-64 rounded-2xl"
+    class="flex gap-2 flex-col p-2 bg-emerald-900 min-w-64 rounded-2xl relative"
   >
-  <div class="px-2 mt-1 relative min-h-8" v-clickOutside="endEditingContainerName">
-    <textarea
-      ref="containerMame"
-      :class="{
-        'not-editing':!editContainerName
-      }"
-      class="font-bold resize-none py-1 outline-hidden shadow-[inset_0_0_0_2px_rgba(0,0,0,0.3)] rounded-md shadow-white border-none opacity-100 bg-transparent absolute right-0 left-0 pl-2 max-h-12 transition-[background-color,_border-color,_box-shadow] duration-200" v-model="container.name"/>
-    <h2 
-      class="font-bold text-left w-full py-1" 
-      :hidden="editContainerName"
-      @click="startEditingContainerName">
-     {{ container.name }}
-    </h2>
+  <div class="flex justify-between gap-2">
+    <div class="px-2 mt-1 relative min-h-8 w-full" v-clickOutside="endEditingContainerName">
+        <textarea
+            ref="containerMame"
+            :class="{
+              'not-editing':!editContainerName
+            }"
+            class="font-bold resize-none py-1 outline-hidden shadow-[inset_0_0_0_2px_rgba(0,0,0,0.3)] rounded-md shadow-white border-none opacity-100 bg-transparent absolute right-0 left-0 pl-2 max-h-12 transition-[background-color,_border-color,_box-shadow] duration-200" v-model="container.name"/>
+          <h2 
+            class="font-bold text-left w-full py-1" 
+            :hidden="editContainerName"
+            @click="startEditingContainerName">
+           {{ container.name }}
+          </h2>
+      </div>
+    <button class="p-2 rounded-2xl border-transparent hover:bg-slate-300/40" @click="containerOptions = !containerOptions" v-clickOutside="closeContainerOptions"><dots-icon/></button>
+  </div>
+  <div class="absolute top-16 left-36 z-20 border-2 rounded-lg" v-if="containerOptions">
+    <custom-button class="bg-[#66837d]" @click="removeContainer">Remove</custom-button>
   </div>
   <div ref="parent" class="p-1 rounded-md transition-[color,_background-color,_border-color] min-h-12 card-container">
     <card-component

@@ -19,6 +19,13 @@ const containerToAdd = ref<Container>(appData.value.getEmptyContainer());
 function saveApp(){
   appData.value.saveInLocalStorage()
 }
+const { parent, removeAt, insertAt } = useDragAndDrop(containers, {
+  direction: "horizontal",
+  removingClass:'after-remove',
+  insertingFromClass: 'before-insert',
+  delayBeforeRemove: 200,
+  delayBeforeInsert: 200
+});
 const startAddingContainer = () => {
   if (!addingContainer.value) {
     containerToAdd.value = appData.value.getEmptyContainer();
@@ -27,17 +34,11 @@ const startAddingContainer = () => {
     return
   } 
   else {
-    appData.value.addContainer(containerToAdd.value)
+    insertAt(containers.value.length, containerToAdd.value)
     saveApp();
   }
   addingContainer.value = !addingContainer.value;
 };
-const { parent } = useDragAndDrop(containers, {
-  direction: "horizontal"
-});
-document.addEventListener('DOMContentLoaded',()=>{
-  containers.value = appData.value.loadLocalStorage()
-})
 function closeEditOptions(containerId:number){
   if (containerId == editOptionsContainer.value) {
     showingEditOptions.value = false;
@@ -81,14 +82,7 @@ watch(containers,()=>{
   </div>
   <div class="flex items-start gap-4 p-8">
     <div ref="parent"  class="flex items-start gap-4 w-full overflow-x-auto fluid-trello-container py-2">
-      <transition-group
-        name="containers"
-        enter-from-class="opacity-0 -translate-x-2"
-        leave-to-class="opacity-0 -translate-x-2"
-        leave-active-class="transition-[transform,_opacity] duration-500 ease"
-        enter-active-class="transition-[transform,_opacity] duration-500 ease"
-      >
-        <card-container
+      <card-container
           v-for="(container, index) in containers"
           :container
           :app-data
@@ -98,8 +92,9 @@ watch(containers,()=>{
           @showEditOptions="(containerId, cardText, options)=>showEditOptions(containerId, cardText, options)"
           @close-edit-options="(containerId)=>closeEditOptions(containerId)"
           @save-app="saveApp()"
+          :remove-container="()=> removeAt(index)"
+          class="card-container"
         />
-      </transition-group>
     </div>
     <div
       class="flex flex-col bg-emerald-900 border-emerald-600 rounded-lg transition-[padding,_gap] duration-200 ease-in"
@@ -129,5 +124,15 @@ watch(containers,()=>{
 /* Define the thumb style */
 .fluid-trello-container {
   scrollbar-color: rgb(16 185 129) rgb(6 78 59);
+}
+.card-container{
+  transition: opacity 200ms ease;
+  opacity: 1;
+}
+.card-container.after-remove{
+  opacity: 0;
+}
+.card-container.before-insert{
+  opacity: 0;
 }
 </style>

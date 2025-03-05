@@ -3,6 +3,7 @@ export class AppData{
   containers: Container[]
   constructor(){
     this.containers = []
+    this.loadLocalStorage()
   }
   saveInLocalStorage(){
     localStorage.setItem(fluidTrelloKey, JSON.stringify(this))
