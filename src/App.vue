@@ -22,7 +22,6 @@ function saveApp(){
 const { parent, removeAt, insertAt } = useDragAndDrop(containers, {
   direction: "horizontal",
   removingClass:'after-remove',
-  insertingFromClass: 'before-insert',
   delayBeforeRemove: 200,
   delayBeforeInsert: 200
 });
@@ -81,7 +80,7 @@ watch(containers,()=>{
       </div>
   </div>
   <div class="flex items-start gap-4 p-8">
-    <div ref="parent"  class="flex items-start gap-4 w-full overflow-x-auto fluid-trello-container py-2">
+    <div ref="parent" class="flex items-start gap-4 w-full overflow-x-auto fluid-trello-container py-2">
       <card-container
           v-for="(container, index) in containers"
           :container
@@ -93,7 +92,7 @@ watch(containers,()=>{
           @close-edit-options="(containerId)=>closeEditOptions(containerId)"
           @save-app="saveApp()"
           :remove-container="()=> removeAt(index)"
-          class="card-container"
+          class="trello-container"
         />
     </div>
     <div
@@ -125,14 +124,13 @@ watch(containers,()=>{
 .fluid-trello-container {
   scrollbar-color: rgb(16 185 129) rgb(6 78 59);
 }
-.card-container{
-  transition: opacity 200ms ease;
-  opacity: 1;
+.trello-container{
+  transition: opacity 400ms ease;
 }
-.card-container.after-remove{
+.trello-container.after-remove{
   opacity: 0;
 }
-.card-container.before-insert{
+.trello-container.from-inserting{
   opacity: 0;
 }
 </style>
