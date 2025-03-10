@@ -109,7 +109,7 @@ onMounted(()=>{
     class="flex gap-2 flex-col p-2 bg-emerald-900 min-w-64 rounded-2xl relative"
   >
   <div class="flex justify-between gap-2">
-    <div class="px-2 mt-1 relative min-h-8 w-full" v-clickOutside="endEditingContainerName">
+    <div class="px-2 mt-1 relative min-h-8 w-full cursor-pointer" v-clickOutside="endEditingContainerName">
         <textarea
             ref="containerMame"
             :class="{
