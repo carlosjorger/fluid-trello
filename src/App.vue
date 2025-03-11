@@ -19,12 +19,16 @@ const containerToAdd = ref<Container>(appData.value.getEmptyContainer());
 function saveApp(){
   appData.value.saveInLocalStorage()
 }
+
+const direction = (window.innerWidth < 768)? 'vertical' : 'horizontal' as 'horizontal' | 'vertical';
+
 const { parent, removeAt, insertAt } = useDragAndDrop(containers, {
-  direction: "horizontal",
+  direction,
   removingClass:'after-remove',
   delayBeforeRemove: 200,
   delayBeforeInsert: 200
 });
+
 const startAddingContainer = () => {
   if (!addingContainer.value) {
     containerToAdd.value = appData.value.getEmptyContainer();
@@ -79,8 +83,8 @@ watch(containers,()=>{
         <custom-button class="bg-[#66837d]" @click="deleteCardCommand">Remove</custom-button>
       </div>
   </div>
-  <div class="flex items-start gap-4 p-8">
-    <div ref="parent" class="flex items-start gap-4 w-full overflow-x-auto fluid-trello-container py-2">
+  <div class="flex items-start gap-4 p-8 max-md:flex-col">
+    <div ref="parent" class="flex items-start gap-4 w-full overflow-x-auto fluid-trello-container py-2 max-md:flex-col max-md:overflow-hidden">
       <card-container
           v-for="(container, index) in containers"
           :container
