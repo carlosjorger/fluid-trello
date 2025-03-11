@@ -4,6 +4,8 @@ import CardContainer from "./components/CardContainer.vue";
 import { AppData, Container, editOptions } from "./components";
 import { useDragAndDrop } from "vue-fluid-dnd";
 import CustomButton from './components/CustomButton.vue';
+import Header from "./components/Header.vue";
+
 
 const appData = ref(new AppData())
 const containers = ref(appData.value.containers);
@@ -77,6 +79,7 @@ watch(containers,()=>{
 </script>
 
 <template>
+  <Header/>
   <div v-if="showingEditOptions" class="bg-[hsla(0,_0%,_0%,_0.6)] h-screen fixed top-0 bottom-0 left-0 right-0 z-10">
     <div :id="editOptions" class="m-2 w-fit flex gap-2">
         <input id="editing-card" v-focus type="text" class="border-white border-2 rounded-lg p-2" v-model="currentEditingCardText"> 
@@ -122,7 +125,6 @@ watch(containers,()=>{
     </div>
   </div>
 </template>
-<!-- TODO: delete container feature -->
  <style>
 /* Define the thumb style */
 .fluid-trello-container {
