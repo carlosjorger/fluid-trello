@@ -1,28 +1,54 @@
 <script setup lang="ts">
-import { onMounted, ref, useTemplateRef } from "vue";
+import { onMounted, PropType, ref, useTemplateRef } from "vue";
 import PlusIcon from "./icons/PlusIcon.vue";
 import { useDragAndDrop } from "vue-fluid-dnd";
-import { AppData, Container } from ".";
+import {  } from "vue-fluid-dnd";
+
+import { AppData, Card, Container } from ".";
 import CustomButton from './CustomButton.vue';
 import CardComponent from "./Card.vue";
 import DotsIcon from "./icons/DotsIcon.vue";
+import { DragEndEventData } from "vue-fluid-dnd";
 
-const { container, appData, removeContainer } = defineProps<{ container: Container, appData: AppData, removeContainer: () => void }>();
+const { container, appData, removeContainer, onDragStart, onDragEnd } = defineProps(
+  { 
+    container: {
+      type: Container,
+      required: true
+    }, 
+    appData: {
+      type: AppData,
+      required: true
+    }, 
+    removeContainer: {
+      type: Function as PropType<() => void>
+    },
+    onDragStart: {
+      type: Function as PropType<(data: DragEndEventData<Card>) => void>,
+      default: () => {}
+    },
+    onDragEnd: {
+      type: Function as PropType<(data: DragEndEventData<Card>) => void>,
+      default: () => {}
+    },
+  }
+);
 
 const currentCard = ref("");
 const cards = ref(container.cards);
 const editContainerName = ref(false)
-  const emit = defineEmits<{
-        (e: 'showEditOptions',
-        containerId : number,
-        cardText: string, 
-        options:{
-          deleteCard?:()=>void,
-          updateCard?:(cardText:string)=>void
-        }): void,
-        (e: 'closeEditOptions', containerId : number): void,
-        (e: 'saveApp'): void
-    }>()
+const emit = defineEmits<{
+      (e: 'showEditOptions',
+      containerId : number,
+      cardText: string, 
+      options:{
+        deleteCard?:()=>void,
+        updateCard?:(cardText:string)=>void
+      }): void,
+      (e: 'closeEditOptions', containerId : number): void,
+      (e: 'saveApp'): void
+  }>()
+    
 const editingCards = new Map<number, boolean>()
 
 const containerOptions = ref(false)
@@ -42,7 +68,9 @@ const addCart = () => {
 const { parent, removeAt, insertAt } = useDragAndDrop(cards,{
   droppableGroup:'cards',
   droppableClass:'droppable-cards-container',
-  insertingFromClass: 'before-insert'
+  insertingFromClass: 'before-insert',
+  onDragStart,
+  onDragEnd
 });
 const containerMame = useTemplateRef('containerMame')
 const observer = ref<MutationObserver>()
@@ -172,6 +200,11 @@ textarea{
 }
 .card-container{
   scrollbar-width: thin;
+  border-width: 0.2rem;
+  border-color: transparent;
+}
+.card-container.marked-group{
+  border-color: white;
 }
 .trello-card{
   transition: opacity 125ms ease;

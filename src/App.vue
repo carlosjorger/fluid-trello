@@ -44,6 +44,18 @@ const startAddingContainer = () => {
   }
   addingContainer.value = !addingContainer.value;
 };
+function onDragStart(){
+  const droppables = parent.value?.querySelectorAll('.droppable-group-cards')??[]
+  for (const droppable of [...droppables]) {
+    droppable.classList.toggle('marked-group',true)
+  }
+}
+function onDragEnd (){
+  const droppables = parent.value?.querySelectorAll('.droppable-group-cards')??[]
+  for (const droppable of [...droppables]) {
+    droppable.classList.toggle('marked-group',false)
+  }
+}
 function closeEditOptions(containerId:number){
   if (containerId == editOptionsContainer.value) {
     showingEditOptions.value = false;
@@ -100,6 +112,8 @@ watch(containers,()=>{
           @save-app="saveApp()"
           :remove-container="()=> removeAt(index)"
           class="trello-container"
+          :onDragStart
+          :onDragEnd
         />
     </div>
     <div
