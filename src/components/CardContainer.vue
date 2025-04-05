@@ -151,9 +151,15 @@ onMounted(()=>{
            {{ container.name }}
           </h2>
       </div>
-    <button class="p-2 rounded-2xl border-transparent hover:bg-slate-300/40" @click="containerOptions = !containerOptions" v-clickOutside="closeContainerOptions"><dots-icon/></button>
+    <button 
+      class="p-2 rounded-2xl border-transparent hover:bg-slate-300/40 cursor-pointer" 
+      :class="{
+        'bg-slate-300/40':containerOptions
+      }"
+      @click="containerOptions = !containerOptions" 
+      v-clickOutside="closeContainerOptions"><dots-icon/></button>
   </div>
-  <div class="absolute top-16 left-36 z-20 border-2 rounded-lg" v-if="containerOptions">
+  <div class="absolute top-14 left-36 z-20 border-2 rounded-lg" v-if="containerOptions">
     <custom-button class="bg-[#66837d]" @click="removeContainer">Remove</custom-button>
   </div>
   <div ref="parent" class="p-1 rounded-md transition-[color,_background-color,_border-color] min-h-12 card-container">
